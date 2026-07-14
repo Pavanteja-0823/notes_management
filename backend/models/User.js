@@ -1,0 +1,122 @@
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+/**
+ * User Schema - stores user authentication and profile data
+ */
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Name is required'],
+      trim: true,
+      minlength: [2, 'Name must be at least 2 characters'],
+      maxlength: [50, 'Name cannot exceed 50 characters'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address'],
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      minlength: [6, 'Password must be at least 6 characters'],
+      select: false, // Don't include password in queries by default
+    },
+    avatar: {
+      type: String,
+      default: '',
+    },
+    preferences: {
+      theme: {
+        type: String,
+        enum: ['light', 'dark'],
+        default: 'light',
+      },
+      defaultNoteColor: {
+        type: String,
+        default: '#ffffff',
+      },
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    // ─── Premium Fields ─────────────────────────────────────────
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    premiumSince: {
+      type: Date,
+      default: null,
+    },
+    // Per-feature monthly usage tracking
+    aiUsage: {
+      summarize: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      rewrite: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'continue-writing': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'grammar-check': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'improve-writing': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      translate: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      explain: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'smart-tags': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'smart-search': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      flashcards: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      quiz: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'mind-map': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'meeting-notes': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'action-items': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      chat: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'pdf-summarizer': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      ocr: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'voice-to-notes': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'email-generator': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'blog-generator': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'study-notes': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+      'interview-questions': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
+    },
+  },
+  {
+    timestamps: true, // Adds createdAt and updatedAt
+  }
+);
+
+/**
+ * Pre-save middleware: Hash password before saving
+ */
+userSchema.pre('save', async function (next) {
+  // Only hash if password is modified
+  if (!this.isModified('password')) return next();
+
+  try {
+    const salt = await bcrypt.genSalt(12);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * Compare candidate password with stored hash
+ */
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
+/**
+ * Return user object without sensitive fields
+ */
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  delete user.password;
+  delete user.__v;
+  return user;
+};
+
+module.exports = mongoose.model('User', userSchema);
