@@ -58,7 +58,9 @@ const xssProtection = (req, res, next) => {
 const noSqlSanitizer = mongoSanitize({
   replaceWith: '_',
   onSanitize: ({ req, key }) => {
-    console.warn(`Request with path ${req.path} contained sanitized key: ${key}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`Request with path ${req.path} contained sanitized key: ${key}`);
+    }
   },
 });
 
