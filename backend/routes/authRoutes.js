@@ -9,7 +9,7 @@ const {
   uploadAvatar,
   deleteAccount,
 } = require('../controllers/authController');
-const { protect } = require('../middleware/auth');
+const { protect, refreshAccessToken } = require('../middleware/auth');
 const upload = require('../middleware/upload');
 const {
   registerValidation,
@@ -21,6 +21,10 @@ const {
 // ─── Public Routes ────────────────────────────────────────────────
 router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
+
+// ─── Refresh Token Route ──────────────────────────────────────────
+// Exchanges a valid refresh token for a new access token
+router.post('/refresh-token', refreshAccessToken);
 
 // ─── Protected Routes ─────────────────────────────────────────────
 router.get('/me', protect, getMe);

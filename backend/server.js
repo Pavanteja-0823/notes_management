@@ -3,10 +3,13 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
+const hpp = require('hpp');
 require('dotenv').config();
 
 const connectDB = require('./config/db');
 const { errorHandler } = require('./middleware/errorHandler');
+const { generalLimiter, authLimiter, aiLimiter } = require('./middleware/rateLimiter');
+const { xssProtection, noSqlSanitizer } = require('./middleware/sanitize');
 
 // ─── Route Imports ──────────────────────────────────────────────
 const authRoutes = require('./routes/authRoutes');
@@ -18,15 +21,20 @@ const aiRoutes = require('./routes/aiRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ─── Connect to Database ────────────────────────────────────────
-connectDB();
+// ─── Database Connection ────────────────────────────────────────
+// Only connect if not in test environment (tests use in-memory MongoDB)
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 
-// ─── Middleware ──────────────────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════
+// SECURITY MIDDLEWARE (applied in order of importance)
+// ═════════════════════════════════════════════════════════════════
 
-// Security headers
+// 1. Security headers via Helmet
 app.use(helmet({ crossOriginResourcePolicy: false }));
 
-// CORS - allow frontend origin
+// 2. CORS - allow frontend origin
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
@@ -36,19 +44,35 @@ app.use(
   })
 );
 
-// Request logging in development
+// 3. HTTP Parameter Pollution protection
+app.use(hpp());
+
+// 4. Rate Limiting (disabled in test mode)
+if (process.env.NODE_ENV !== 'test') {
+  app.use('/api/', generalLimiter);          // General rate limit for all API routes
+  app.use('/api/auth/', authLimiter);        // Strict rate limit for auth routes
+  app.use('/api/ai/', aiLimiter);            // Moderate rate limit for AI features
+}
+
+// 5. Body parsing (before sanitization to parse the input)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// 6. Input sanitization
+app.use(xssProtection);                    // XSS protection - strips dangerous HTML/JS
+app.use(noSqlSanitizer);                   // NoSQL injection prevention
+
+// 7. Request logging in development
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Body parsing
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
-
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ─── API Routes ─────────────────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════
+// API ROUTES
+// ═════════════════════════════════════════════════════════════════
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -114,23 +138,27 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 // ─── Start Server ───────────────────────────────────────────────
-const server = app.listen(PORT, () => {
-  console.log(`\n🚀 Smart Notes API Server`);
-  console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`   Port: ${PORT}`);
-  console.log(`   URL: http://localhost:${PORT}`);
-  console.log(`   Health: http://localhost:${PORT}/api/health\n`);
-});
+// Only start listening when not in test mode
+if (process.env.NODE_ENV !== 'test') {
+  const server = app.listen(PORT, () => {
+    console.log(`\n🚀 Smart Notes API Server`);
+    console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`   Port: ${PORT}`);
+    console.log(`   URL: http://localhost:${PORT}`);
+    console.log(`   Health: http://localhost:${PORT}/api/health\n`);
+  });
 
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-  console.error('❌ Unhandled Promise Rejection:', err.message);
-  // Close server gracefully
-  server.close(() => process.exit(1));
-});
+  // Handle unhandled promise rejections
+  process.on('unhandledRejection', (err) => {
+    console.error('❌ Unhandled Promise Rejection:', err.message);
+    server.close(() => process.exit(1));
+  });
 
-// Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
-  console.error('❌ Uncaught Exception:', err.message);
-  process.exit(1);
-});
+  // Handle uncaught exceptions
+  process.on('uncaughtException', (err) => {
+    console.error('❌ Uncaught Exception:', err.message);
+    process.exit(1);
+  });
+}
+
+module.exports = app;

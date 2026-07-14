@@ -46,7 +46,17 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    // ─── Premium Fields ─────────────────────────────────────────
+    // ─── Security: JWT Refresh Token ───────────────────────────────
+    refreshToken: {
+      type: String,
+      select: false, // Not returned by default for security
+      default: null,
+    },
+    refreshTokenExpires: {
+      type: Date,
+      default: null,
+    },
+    // ─── Premium Fields ─────────────────────────────────────────────
     isPremium: {
       type: Boolean,
       default: false,
@@ -116,6 +126,8 @@ userSchema.methods.toJSON = function () {
   const user = this.toObject();
   delete user.password;
   delete user.__v;
+  delete user.refreshToken;   // Never expose refresh token
+  delete user.refreshTokenExpires;
   return user;
 };
 
