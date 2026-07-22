@@ -50,7 +50,13 @@ export function AuthProvider({ children }) {
    */
   const register = useCallback(async (userData) => {
     const response = await authApi.register(userData);
-    const { token, user: userData_ } = response.data.data;
+    const resData = response.data?.data || response.data;
+    const token = resData?.token;
+    const userData_ = resData?.user;
+
+    if (!token || !userData_) {
+      throw { message: 'Registration failed. Please check your connection and try again.' };
+    }
 
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData_));
@@ -64,7 +70,13 @@ export function AuthProvider({ children }) {
    */
   const login = useCallback(async (credentials) => {
     const response = await authApi.login(credentials);
-    const { token, user: userData } = response.data.data;
+    const resData = response.data?.data || response.data;
+    const token = resData?.token;
+    const userData = resData?.user;
+
+    if (!token || !userData) {
+      throw { message: 'Login failed. Please check your connection and try again.' };
+    }
 
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
