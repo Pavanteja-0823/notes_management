@@ -39,25 +39,7 @@ const authLimiter = rateLimit({
   skipSuccessfulRequests: false,
 });
 
-/**
- * Moderate rate limiter for AI features
- * Prevents abuse of premium features
- * Default: 30 requests per minute per IP
- */
-const aiLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: parseInt(process.env.AI_RATE_LIMIT_MAX) || 30,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: {
-    success: false,
-    message: 'Too many AI requests. Please slow down.',
-    code: 'AI_RATE_LIMIT_EXCEEDED',
-  },
-});
-
 module.exports = {
   generalLimiter,
   authLimiter,
-  aiLimiter,
 };

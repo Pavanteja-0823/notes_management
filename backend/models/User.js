@@ -56,40 +56,6 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    // ─── Premium Fields ─────────────────────────────────────────────
-    isPremium: {
-      type: Boolean,
-      default: false,
-    },
-    premiumSince: {
-      type: Date,
-      default: null,
-    },
-    // Per-feature monthly usage tracking
-    aiUsage: {
-      summarize: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      rewrite: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'continue-writing': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'grammar-check': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'improve-writing': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      translate: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      explain: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'smart-tags': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'smart-search': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      flashcards: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      quiz: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'mind-map': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'meeting-notes': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'action-items': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      chat: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'pdf-summarizer': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      ocr: { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'voice-to-notes': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'email-generator': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'blog-generator': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'study-notes': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-      'interview-questions': { count: { type: Number, default: 0 }, month: { type: String, default: '' } },
-    },
   },
   {
     timestamps: true, // Adds createdAt and updatedAt

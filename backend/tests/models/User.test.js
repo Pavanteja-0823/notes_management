@@ -21,7 +21,6 @@ describe('User Model', () => {
       expect(user.name).toBe('Test User');
       expect(user.email).toBe('test@example.com');
       expect(user.isActive).toBe(true);
-      expect(user.isPremium).toBe(false);
     });
 
     it('should fail without name', async () => {
@@ -118,34 +117,6 @@ describe('User Model', () => {
       expect(json.refreshTokenExpires).toBeUndefined();
       expect(json.name).toBeDefined();
       expect(json.email).toBeDefined();
-    });
-  });
-
-  describe('Premium Fields', () => {
-    it('should create non-premium user by default', async () => {
-      const user = await User.create(validUserData);
-      expect(user.isPremium).toBe(false);
-      expect(user.premiumSince).toBeNull();
-    });
-
-    it('should create premium user with premiumSince date', async () => {
-      const now = new Date();
-      const user = await User.create({
-        ...validUserData,
-        isPremium: true,
-        premiumSince: now,
-      });
-      expect(user.isPremium).toBe(true);
-      expect(user.premiumSince).toEqual(now);
-    });
-
-    it('should track per-feature AI usage', async () => {
-      const user = await User.create(validUserData);
-      expect(user.aiUsage).toBeDefined();
-      expect(user.aiUsage.summarize).toEqual({ count: 0, month: '' });
-      expect(user.aiUsage['grammar-check']).toEqual({ count: 0, month: '' });
-      expect(user.aiUsage['smart-tags']).toEqual({ count: 0, month: '' });
-      expect(user.aiUsage.chat).toEqual({ count: 0, month: '' });
     });
   });
 });

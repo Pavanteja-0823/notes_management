@@ -8,14 +8,14 @@ require('dotenv').config();
 
 const connectDB = require('./config/db');
 const { errorHandler } = require('./middleware/errorHandler');
-const { generalLimiter, authLimiter, aiLimiter } = require('./middleware/rateLimiter');
+const { generalLimiter, authLimiter } = require('./middleware/rateLimiter');
 const { xssProtection, noSqlSanitizer } = require('./middleware/sanitize');
 
 // ─── Route Imports ──────────────────────────────────────────────
 const authRoutes = require('./routes/authRoutes');
 const noteRoutes = require('./routes/noteRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
-const aiRoutes = require('./routes/aiRoutes');
+const diaryRoutes = require('./routes/diaryRoutes');
 
 // ─── Initialize Express ─────────────────────────────────────────
 const app = express();
@@ -51,7 +51,6 @@ app.use(hpp());
 if (process.env.NODE_ENV !== 'test') {
   app.use('/api/', generalLimiter);          // General rate limit for all API routes
   app.use('/api/auth/', authLimiter);        // Strict rate limit for auth routes
-  app.use('/api/ai/', aiLimiter);            // Moderate rate limit for AI features
 }
 
 // 5. Body parsing (before sanitization to parse the input)
@@ -78,7 +77,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.get('/api/health', (req, res) => {
   res.json({
     success: true,
-    message: 'Smart Notes API is running',
+    message: 'Memora API is running',
     timestamp: new Date().toISOString(),
   });
 });
@@ -87,44 +86,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
 app.use('/api/categories', categoryRoutes);
-app.use('/api/ai', aiRoutes);
-
-// ─── API Documentation ──────────────────────────────────────────
-app.get('/api/ai/features', (req, res) => {
-  const features = [
-    { id: 'summarize', name: 'AI Summarize', price: 5 },
-    { id: 'rewrite', name: 'AI Rewrite', price: 4 },
-    { id: 'continue-writing', name: 'AI Continue Writing', price: 4 },
-    { id: 'grammar-check', name: 'AI Grammar & Spell Check', price: 3 },
-    { id: 'improve-writing', name: 'AI Improve Writing', price: 4 },
-    { id: 'translate', name: 'AI Translate', price: 4 },
-    { id: 'explain', name: 'AI Explain', price: 4 },
-    { id: 'chat', name: 'AI Chat with Notes', price: 5 },
-    { id: 'smart-search', name: 'AI Smart Search', price: 4 },
-    { id: 'smart-tags', name: 'AI Smart Tags', price: 3 },
-    { id: 'flashcards', name: 'AI Flashcards', price: 5 },
-    { id: 'quiz', name: 'AI Quiz Generator', price: 5 },
-    { id: 'mind-map', name: 'AI Mind Map', price: 5 },
-    { id: 'meeting-notes', name: 'AI Meeting Notes', price: 5 },
-    { id: 'action-items', name: 'AI Action Items', price: 4 },
-    { id: 'pdf-summarizer', name: 'AI PDF Summarizer', price: 5 },
-    { id: 'ocr', name: 'AI OCR (Image to Text)', price: 4 },
-    { id: 'voice-to-notes', name: 'AI Voice to Notes', price: 5 },
-    { id: 'email-generator', name: 'AI Email Generator', price: 4 },
-    { id: 'blog-generator', name: 'AI Blog/Article Generator', price: 4 },
-    { id: 'study-notes', name: 'AI Study Notes', price: 5 },
-    { id: 'interview-questions', name: 'AI Interview Questions', price: 4 },
-    { id: 'todo-generator', name: 'AI To-Do Generator', price: 4 },
-    { id: 'presentation-generator', name: 'AI Presentation Generator', price: 5 },
-    { id: 'timeline-generator', name: 'AI Timeline Generator', price: 4 },
-    { id: 'table-generator', name: 'AI Table Generator', price: 4 },
-    { id: 'code-explanation', name: 'AI Code Explanation', price: 4 },
-    { id: 'code-generator', name: 'AI Code Generator', price: 4 },
-    { id: 'daily-recap', name: 'AI Daily Recap', price: 3 },
-    { id: 'weekly-insights', name: 'AI Weekly Insights', price: 4 },
-  ];
-  res.json({ success: true, data: { features } });
-});
+app.use('/api/diary', diaryRoutes);
 
 // ─── 404 Handler ────────────────────────────────────────────────
 app.use((req, res) => {
@@ -141,7 +103,7 @@ app.use(errorHandler);
 // Only start listening when not in test mode
 if (process.env.NODE_ENV !== 'test') {
   const server = app.listen(PORT, () => {
-    console.log(`\n🚀 Smart Notes API Server`);
+    console.log(`\n🚀 Memora API Server`);
     console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`   Port: ${PORT}`);
     console.log(`   URL: http://localhost:${PORT}`);

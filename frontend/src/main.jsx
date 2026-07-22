@@ -5,8 +5,6 @@ import { Toaster } from 'react-hot-toast';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
-import { PremiumProvider } from './context/PremiumContext';
-import UpgradeModal from './components/UpgradeModal';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -14,9 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <ThemeProvider>
         <AuthProvider>
-          <PremiumProvider>
             <App />
-            <UpgradeModal />
             <Toaster
               position="top-right"
               toastOptions={{
@@ -42,7 +38,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 },
               }}
             />
-          </PremiumProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

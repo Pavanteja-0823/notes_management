@@ -68,19 +68,6 @@ const createTestUser = async (overrides = {}) => {
 };
 
 /**
- * Create a test premium user
- * @param {Object} overrides - Override default fields
- * @returns {Promise<{user: Object, token: string}>}
- */
-const createTestPremiumUser = async (overrides = {}) => {
-  return createTestUser({
-    ...overrides,
-    isPremium: true,
-    premiumSince: new Date(),
-  });
-};
-
-/**
  * Get auth header object for supertest
  * @param {string} token - JWT token
  * @returns {Object} Authorization header object
@@ -89,4 +76,4 @@ const authHeader = (token) => ({
   Authorization: `Bearer ${token}`,
 });
 
-module.exports = { createTestUser, createTestPremiumUser, authHeader };
+module.exports = { createTestUser, authHeader };

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   FiHome,
   FiHeart,
@@ -13,11 +14,9 @@ import {
   FiFileText,
   FiStar,
   FiHardDrive,
-  FiZap,
+  FiBook,
 } from 'react-icons/fi';
 import CategoryModal from './CategoryModal';
-import { usePremium } from '../context/PremiumContext';
-import { PremiumBadge } from './PremiumGuard';
 
 const navItems = [
   { icon: FiHome, label: 'All Notes', filter: {} },
@@ -39,7 +38,8 @@ export default function Sidebar({
   onToggleCollapse,
   stats,
 }) {
-  const { isPremium, openUpgradeModal } = usePremium();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
 
@@ -77,13 +77,11 @@ export default function Sidebar({
         {/* Header with Logo */}
         <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800 flex items-center justify-center shadow-sm shrink-0">
-              <span className="text-white font-bold text-sm">N</span>
-            </div>
+            <img src="/logo-transparent.png" alt="Memora" className="w-8 h-8 shrink-0 rounded-lg" />
             {!isCollapsed && (
               <div className="flex flex-col min-w-0">
                 <h2 className="text-base font-bold text-gray-800 dark:text-gray-100 leading-tight truncate">
-                  Smart Notes
+                  Memora
                 </h2>
                 <span className="text-[11px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider">
                   Workspace
@@ -125,28 +123,19 @@ export default function Sidebar({
             );
           })}
 
-          {/* AI Menu Item - opens UpgradeModal (same as PRO/lock badge) */}
+          {/* My Diary */}
           <button
-            onClick={openUpgradeModal}
+            onClick={() => navigate('/diary')}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
-              transition-all duration-200 text-gray-600 hover:bg-gray-100 
-              dark:text-gray-400 dark:hover:bg-gray-700/50 group`}
-            title="Premium Features"
+              transition-all duration-200 ${
+                location.pathname === '/diary'
+                  ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
+                  : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700/50'
+              }`}
+            title="My Diary"
           >
-            <div className="relative shrink-0">
-              <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
-                <FiZap size={12} className="text-white" />
-              </div>
-              {isPremium && (
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full" />
-              )}
-            </div>
-            {!isCollapsed && (
-              <>
-                <span className="flex-1 text-left">AI Workspace</span>
-                <PremiumBadge isPremium={isPremium} size="sm" />
-              </>
-            )}
+            <FiBook size={20} className="shrink-0" />
+            {!isCollapsed && <span>My Diary</span>}
           </button>
 
           {/* Divider */}

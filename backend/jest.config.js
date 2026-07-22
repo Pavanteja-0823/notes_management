@@ -1,5 +1,5 @@
 /**
- * Jest Configuration for Smart Notes Backend
+ * Jest Configuration for Memora Backend
  * Uses mongodb-memory-server for isolated test database
  */
 module.exports = {

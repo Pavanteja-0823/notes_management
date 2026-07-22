@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import {
   FiMapPin,
   FiHeart,
@@ -40,6 +41,7 @@ export default function NoteCard({
   onClick,
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const { isDark } = useTheme();
 
   const isTrashed = note.isTrashed;
   const isArchived = note.isArchived;
@@ -48,8 +50,11 @@ export default function NoteCard({
     <div
       className={`group relative card-hover animate-scale-in overflow-hidden`}
       style={{
-        backgroundColor: note.color || '#ffffff',
-        borderColor: isHovered ? undefined : undefined,
+        backgroundColor: note.color && note.color !== '#ffffff'
+          ? note.color
+          : isDark
+            ? '#1f2937'
+            : '#ffffff',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

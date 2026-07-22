@@ -514,7 +514,7 @@ export default function Profile() {
 
         {/* Footer */}
         <p className="text-center text-xs text-gray-400 dark:text-gray-600 pb-6">
-          Smart Notes v1.0 &middot; All your data is securely stored
+          Memora v1.0 &middot; All your data is securely stored
         </p>
       </div>
     </div>

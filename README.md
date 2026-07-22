@@ -1,6 +1,6 @@
-# 📝 Smart Notes Management System
+# 📝 Memora
 
-> A modern, production-ready notes management application built with the MERN stack — similar to Google Keep and Notion. Create, organize, and manage your notes with rich features like categories, tags, favorites, archiving, reminders, and attachments.
+> Your personal companion for notes & daily reflections — a modern, production-ready app built with the MERN stack. Create, organize, and manage your notes and diary with rich features like categories, tags, favorites, archiving, reminders, and attachments.
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
@@ -47,44 +47,6 @@
 | Responsive Design (Mobile, Tablet, Desktop) | ✅ |
 | Reminder Date & Time Picker | ✅ |
 
-### Premium AI Features
-
-| Feature | Status |
-|---------|--------|
-| AI Summarize | ✅ (Architecture Ready) |
-| AI Rewrite (Professional, Casual, Academic, Simple) | ✅ (Architecture Ready) |
-| AI Continue Writing | ✅ (Architecture Ready) |
-| AI Grammar & Spell Check | ✅ (Architecture Ready) |
-| AI Improve Writing | ✅ (Architecture Ready) |
-| AI Translate | ✅ (Architecture Ready) |
-| AI Explain | ✅ (Architecture Ready) |
-| AI Chat with Notes | ✅ (Architecture Ready) |
-| AI Smart Search | ✅ (Architecture Ready) |
-| AI Smart Tags | ✅ (Architecture Ready) |
-| AI Flashcards | ✅ (Architecture Ready) |
-| AI Quiz Generator (MCQs, True/False, Short Answer) | ✅ (Architecture Ready) |
-| AI Mind Map | ✅ (Architecture Ready) |
-| AI Meeting Notes | ✅ (Architecture Ready) |
-| AI Action Items | ✅ (Architecture Ready) |
-| AI PDF Summarizer | ✅ (Architecture Ready) |
-| AI OCR (Image to Text) | ✅ (Architecture Ready) |
-| AI Voice to Notes | ✅ (Architecture Ready) |
-| AI Email Generator | ✅ (Architecture Ready) |
-| AI Blog/Article Generator | ✅ (Architecture Ready) |
-| AI Study Notes | ✅ (Architecture Ready) |
-| AI Interview Questions | ✅ (Architecture Ready) |
-| AI To-Do Generator | ✅ (Architecture Ready) |
-| AI Presentation Generator | ✅ (Architecture Ready) |
-| AI Timeline Generator | ✅ (Architecture Ready) |
-| AI Table Generator | ✅ (Architecture Ready) |
-| AI Code Explanation | ✅ (Architecture Ready) |
-| AI Code Generator | ✅ (Architecture Ready) |
-| AI Daily Recap | ✅ (Architecture Ready) |
-| AI Weekly Insights | ✅ (Architecture Ready) |
-| Premium Access Control (Free vs Premium) | ✅ |
-| Upgrade Modal | ✅ |
-| Premium Badge & Lock UI | ✅ |
-
 ### Upcoming Features
 
 - Note History / Versioning
@@ -98,7 +60,7 @@
 ## 🏗️ Project Structure
 
 ```
-smart-notes-management/
+memora/
 ├── backend/
 │   ├── config/
 │   │   └── db.js                    # MongoDB connection
@@ -183,7 +145,6 @@ smart-notes-management/
 - **Validation**: express-validator
 - **Security**: Helmet, CORS
 - **Logging**: Morgan
-- **AI Provider**: Groq SDK (configurable for OpenAI, Gemini, Claude, DeepSeek, Ollama)
 
 ### Frontend
 - **Framework**: React 18
@@ -312,70 +273,9 @@ The app will be available at:
 | PUT | `/:id` | Update category | ✅ |
 | DELETE | `/:id` | Delete category | ✅ |
 
-### AI Routes (`/api/ai`) - Premium Only
-
-| Method | Endpoint | Description | Premium |
-|--------|----------|-------------|---------|
-| GET | `/premium-status` | Check premium status | ❌ (Auth) |
-| GET | `/features` | List all AI features | ❌ |
-| POST | `/summarize` | Summarize note content | ✅ |
-| POST | `/rewrite` | Rewrite in different tones | ✅ |
-| POST | `/continue-writing` | Continue incomplete notes | ✅ |
-| POST | `/grammar-check` | Grammar & spell check | ✅ |
-| POST | `/improve-writing` | Improve clarity & readability | ✅ |
-| POST | `/translate` | Translate notes | ✅ |
-| POST | `/explain` | Explain complex topics | ✅ |
-| POST | `/chat` | Chat with your notes | ✅ |
-| POST | `/smart-search` | Natural language search | ✅ |
-| POST | `/smart-tags` | Auto-generate tags | ✅ |
-| POST | `/flashcards` | Generate study flashcards | ✅ |
-| POST | `/quiz` | Generate quizzes | ✅ |
-| POST | `/mind-map` | Generate mind maps | ✅ |
-| POST | `/meeting-notes` | Structure meeting minutes | ✅ |
-| POST | `/action-items` | Extract action items | ✅ |
-| POST | `/pdf-summarizer` | Summarize PDF content | ✅ |
-| POST | `/ocr` | Process OCR text | ✅ |
-| POST | `/voice-to-notes` | Convert voice to notes | ✅ |
-| POST | `/email-generator` | Generate email drafts | ✅ |
-| POST | `/blog-generator` | Generate blog posts | ✅ |
-| POST | `/study-notes` | Create study materials | ✅ |
-| POST | `/interview-questions` | Generate interview Q&A | ✅ |
-| POST | `/todo-generator` | Create to-do lists | ✅ |
-| POST | `/presentation-generator` | Generate presentations | ✅ |
-| POST | `/timeline-generator` | Generate timelines | ✅ |
-| POST | `/table-generator` | Generate tables | ✅ |
-| POST | `/code-explanation` | Explain code | ✅ |
-| POST | `/code-generator` | Generate code | ✅ |
-| POST | `/daily-recap` | Daily note recap | ✅ |
-| POST | `/weekly-insights` | Weekly productivity insights | ✅ |
-
 ---
 
 ## 📋 Changelog
-
-### v1.2.0 - Premium AI Module
-**Date**: July 14, 2026
-
-**New Features:**
-- ✅ Premium AI architecture with 30+ features
-- ✅ AI Service layer with provider abstraction (Groq, OpenAI, Gemini, Claude, DeepSeek, Ollama)
-- ✅ AI Summarize, Rewrite, Continue Writing
-- ✅ AI Grammar Check, Improve Writing, Translate, Explain
-- ✅ AI Chat with Notes, Smart Search, Smart Tags
-- ✅ AI Flashcards, Quiz Generator, Mind Map
-- ✅ AI Meeting Notes, Action Items, PDF Summarizer
-- ✅ AI OCR, Voice to Notes, Email/ Blog Generator
-- ✅ AI Study Notes, Interview Questions, To-Do Generator
-- ✅ AI Presentation, Timeline, Table Generators
-- ✅ AI Code Explanation, Code Generator
-- ✅ AI Daily Recap, Weekly Insights
-- ✅ Premium access control (free vs premium users)
-- ✅ Premium lock UI with blur overlays
-- ✅ Upgrade Modal with feature showcase
-- ✅ Premium badge on sidebar, buttons, and menu items
-- ✅ In-editor AI panel with 12 core tools
-- ✅ Dedicated AI Workspace page with all 30 features
-- ✅ Groq SDK integration ready with API key configured
 
 ### v1.1.0 - Feature Release
 **Date**: July 14, 2026
@@ -435,4 +335,4 @@ Contributions are welcome! Feel free to submit issues and pull requests.
 
 ## 📄 License
 
-MIT © Smart Notes
+MIT © Memora

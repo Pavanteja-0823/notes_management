@@ -115,8 +115,8 @@ export default function Register() {
         <div className="w-full max-w-md animate-fade-in">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-14 h-14 bg-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <span className="text-2xl font-bold text-white">N</span>
+            <div className="w-14 h-14 mx-auto mb-4 rounded-xl overflow-hidden shadow-lg">
+              <img src="/logo-transparent.png" alt="Memora" className="w-full h-full" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               Create Account
@@ -282,7 +282,7 @@ export default function Register() {
         <div className="absolute bottom-0 right-0 w-80 h-80 bg-white/5 rounded-full translate-x-1/2 translate-y-1/2" />
 
         <div className="relative z-10 text-white text-center p-12">
-          <h2 className="text-3xl font-bold mb-6">Join Smart Notes Today</h2>
+          <h2 className="text-3xl font-bold mb-6">Join Memora Today</h2>
           <div className="space-y-4 max-w-sm mx-auto">
             {[
               { icon: '🚀', text: 'Get started in seconds' },

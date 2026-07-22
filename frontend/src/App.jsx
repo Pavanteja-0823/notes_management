@@ -4,7 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import AIPage from './pages/AIPage';
+import Diary from './pages/Diary';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
@@ -55,10 +55,10 @@ export default function App() {
         }
       />
       <Route
-        path="/ai"
+        path="/diary"
         element={
           <ProtectedRoute>
-            <AIPage />
+            <Diary />
           </ProtectedRoute>
         }
       />

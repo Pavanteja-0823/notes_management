@@ -58,12 +58,12 @@ export default function Login() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/[0.02] rounded-full" />
 
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 text-center w-full">
-          <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-8 shadow-2xl">
-            <span className="text-4xl font-bold">N</span>
+          <div className="w-20 h-20 mb-8 bg-white/10 backdrop-blur-sm rounded-2xl p-2 shadow-2xl">
+            <img src="/logo-transparent.png" alt="Memora" className="w-full h-full rounded-xl" />
           </div>
-          <h1 className="text-4xl font-bold mb-4">Smart Notes</h1>
+          <h1 className="text-4xl font-bold mb-4">Memora</h1>
           <p className="text-xl text-white/80 max-w-md">
-            Organize your thoughts, ideas, and tasks in one beautiful place.
+            Your personal space to capture notes, thoughts, and daily reflections.
           </p>
 
           {/* Feature highlights */}
@@ -100,8 +100,8 @@ export default function Login() {
         <div className="w-full max-w-md animate-fade-in">
           {/* Mobile logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="w-14 h-14 bg-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <span className="text-2xl font-bold text-white">N</span>
+            <div className="w-14 h-14 mx-auto mb-4 rounded-xl overflow-hidden shadow-lg">
+              <img src="/logo-transparent.png" alt="Memora" className="w-full h-full" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               Welcome Back
