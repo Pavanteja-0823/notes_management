@@ -14,6 +14,9 @@
     "test:categories": "cross-env NODE_ENV=test jest tests/controllers/category.test.js --forceExit",
     "test:middleware": "cross-env NODE_ENV=test jest tests/middleware/ --forceExit"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "keywords": [
     "notes",
     "management",

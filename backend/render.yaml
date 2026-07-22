@@ -1,0 +1,25 @@
+# Render Blueprint for Memora Backend API
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: memora-api
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "5000"
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRE
+        value: "90d"
+      - key: FRONTEND_URL
+        sync: false
